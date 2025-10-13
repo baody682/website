@@ -522,6 +522,7 @@
         .social-links a:hover {
             color: var(--fd-blue);
         }
+        /* ضبط الكود للجوال */
         
         @media (max-width: 900px) {
             .header {
@@ -533,19 +534,22 @@
                 display: none;
             }
             .hero-section {
-                min-height: 100vh;
                 padding-top: 80px;
                 padding-bottom: 40px;
             }
-            .footer-grid {
-                flex-direction: column;
-                align-items: center;
-                gap: 50px;
+            .hero-section h1 {
+                font-size: 38px;
             }
+            .hero-section p {
+                font-size: 18px;
+            }
+            /* تعديلات شريط البحث */
             .search-box {
+                height: auto;
                 flex-wrap: wrap;
                 border-radius: 10px;
-                padding: 0;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+                border: 2px solid var(--fd-blue);
             }
             .search-box input {
                 width: 100%;
@@ -553,9 +557,12 @@
                 border-radius: 0;
                 border-top-right-radius: 8px;
                 border-top-left-radius: 8px;
+                font-size: 16px;
+                height: auto;
             }
             #location-btn,
             #final-search-btn {
+                height: 50px;
                 width: 50%;
                 flex-grow: 1;
                 padding: 15px 10px;
@@ -569,14 +576,50 @@
             #location-btn {
                 border-bottom-right-radius: 8px;
             }
+            /* تعديل أقسام الفئات والمدن */
+            .categories-section {
+                padding: 30px 20px;
+            }
+            .categories-section h2 {
+                font-size: 26px;
+                margin-bottom: 25px;
+            }
+            .categories-grid {
+                gap: 15px;
+            }
+            .category-card {
+                min-height: 180px;
+                padding: 20px;
+            }
+            .card-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 30px;
+            }
+            .cities-section {
+                padding: 40px 20px;
+            }
             .cities-grid {
                 grid-template-columns: 1fr;
-                padding: 0 20px;
+                padding: 0;
                 box-shadow: none;
                 background-color: transparent;
             }
             .city-card {
                 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+            /* تعديلات التذييل */
+            .footer-grid {
+                flex-direction: column;
+                align-items: center;
+                gap: 30px;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                align-items: center;
+            }
+            .footer {
+                padding: 30px 20px;
             }
         }
     </style>
@@ -814,6 +857,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             updateContent(currentLang);
             handleScroll();
+
             window.addEventListener('scroll', handleScroll);
         });
     </script>
