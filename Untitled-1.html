@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fast Delivery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY_HERE&libraries=places&callback=initAutocomplete"></script>
+    <style>
+        /* ---------------------------------- */
+        /* CSS Styles (Fast Delivery Theme) */
+        /* ---------------------------------- */
+        
+         :root {
+            --fd-blue: #FFC119;
+            /* اللون الأساسي: أصفر نابض بالحياة */
+            --fd-dark: #333;
+            --fd-light-gray: #f5f5f5;
+            --fd-text-gray: #666;
+            --fd-white: #fff;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            /* تم التعديل إلى خط Cairo */
+            font-family: 'Cairo', 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+        }
+        
+        body {
+            background-color: var(--fd-white);
+            color: var(--fd-dark);
+        }
+        
+        a {
+            text-decoration: none;
+            color: var(--fd-dark);
+        }
+        /* -------------------- HEADER - شفاف وثابت -------------------- */
+        
+        .header {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            padding: 15px 50px;
+            border-bottom: none;
+            background-color: transparent;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transition: background-color 0.3s, box-shadow 0.3s, border-bottom 0.3s;
+        }
+        
+        .header.scrolled {
+            background-color: var(--fd-white);
+            border-bottom: 1px solid #eee;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        /* [تعديل جديد] - حاوية اللوغو والنص معاً */
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            /* مسافة بين الصورة والنص */
+            cursor: pointer;
+            justify-self: start;
+            align-self: center;
+        }
+        
+        .logo {
+            height: 40px;
+            width: auto;
+            max-width: 100%;
+        }
+        
+        .logo-text {
+            font-size: 27px;
+            font-weight: 900;
+            color: var(--fd-blue);
+            line-height: 1;
+            transition: color 0.3s;
+        }
+        
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            justify-self: center;
+            align-self: center;
+        }
+        
+        .nav-links a {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--fd-dark);
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--fd-blue);
+        }
+        
+        .action-buttons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            justify-self: end;
+            align-self: center;
+        }
+        
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: var(--fd-dark);
+            cursor: pointer;
+            padding: 5px;
+            transition: all 0.3s;
+        }
+        
+        .icon-btn:hover {
+            color: var(--fd-blue);
+            transform: scale(1.1);
+        }
+        
+        .login-btn-header {
+            background-color: var(--fd-blue);
+            color: var(--fd-dark);
+            /* تم التعديل لجعل النص أسود ليناسب الخلفية الصفراء */
+            border: none;
+            padding: 8px 15px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .login-btn-header:hover {
+            background-color: #FFA000;
+            /* ظل أصفر/برتقالي أغمق */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transform: translateY(-1px);
+        }
+        /* -------------------- HERO SECTION - تدرج أوضح وبملء الشاشة -------------------- */
+        
+        .hero-section {
+            /* التدرج الجديد: أبيض ناعم مع لمسة صفراء فاتحة جداً */
+            background: linear-gradient(135deg, #fffbe6 0%, #ffffff 100%);
+            color: var(--fd-dark);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+            padding-top: 0;
+            padding-bottom: 60px;
+        }
+        
+        .hero-section::before {
+            /* زيادة قوة الوهج الأصفر الأول */
+            content: "";
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 193, 25, 0.7);
+            border-radius: 50%;
+            filter: blur(200px);
+            z-index: 1;
+        }
+        
+        .hero-section::after {
+            /* زيادة قوة الوهج الأصفر الثاني */
+            content: "";
+            position: absolute;
+            bottom: -50px;
+            left: -50px;
+            width: 350px;
+            height: 350px;
+            background: rgba(255, 193, 25, 0.5);
+            border-radius: 50%;
+            filter: blur(200px);
+            z-index: 1;
+        }
+        
+        .hero-section .container {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+            width: 100%;
+            padding: 0 20px;
+        }
+        /* -------------------- GRADIENT TRANSITION LAYER -------------------- */
+        
+        .hero-section-fade-out {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            z-index: 2;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, var(--fd-light-gray) 100%);
+        }
+        /* -------------------- HERO CONTENT -------------------- */
+        
+        .hero-section h1 {
+            font-size: 56px;
+            margin-bottom: 15px;
+            font-weight: 900;
+            color: var(--fd-blue);
+            line-height: 1.1;
+        }
+        
+        .hero-section p {
+            font-size: 22px;
+            margin-bottom: 30px;
+            color: var(--fd-dark);
+            font-weight: 500;
+        }
+        /* -------------------- SEARCH BAR - تعديل شكل الحبة (سطح المكتب) -------------------- */
+        
+        .search-wrapper {
+            background-color: transparent;
+            padding: 0;
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        .search-box {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            border-radius: 50px;
+            overflow: hidden;
+            background-color: var(--fd-white);
+            border: 2px solid var(--fd-blue);
+            padding: 0;
+        }
+        
+        .search-box input {
+            padding: 16px 25px;
+            flex-grow: 1;
+            border: none;
+            font-size: 19px;
+            outline: none;
+            background-color: transparent;
+            border-radius: 0;
+        }
+        
+        .search-box button {
+            height: 100%;
+            padding: 16px 20px;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            color: var(--fd-dark);
+            flex-shrink: 0;
+            margin: 0;
+        }
+        
+        #location-btn {
+            background-color: var(--fd-dark);
+            color: var(--fd-white);
+            border-radius: 0 50px 50px 0;
+            padding: 17px 30px;
+        }
+        
+        #location-btn:hover {
+            background-color: #1a1a1a;
+        }
+        
+        #final-search-btn {
+            background-color: var(--fd-blue);
+            font-size: 26px;
+            padding: 16px 30px;
+            border-radius: 50px 0 0 50px;
+        }
+        
+        #final-search-btn:hover {
+            background-color: #FFA000;
+        }
+        /* -------------------- END SEARCH BAR DESKTOP -------------------- */
+        /* -------------------- CATEGORIES SECTION -------------------- */
+        
+        .categories-section {
+            padding: 50px 50px;
+            background-color: var(--fd-white);
+            text-align: center;
+        }
+        
+        .categories-section.gray-bg {
+            background-color: var(--fd-light-gray);
+        }
+        
+        .categories-section h2 {
+            font-size: 32px;
+            margin-bottom: 40px;
+            font-weight: bold;
+        }
+        
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .category-card {
+            padding: 30px;
+            background-color: var(--fd-white);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 220px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .category-card-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 1;
+            z-index: 1;
+            transition: all 0.3s;
+        }
+        /* التعديل 1: جعل التظليل أغمق لزيادة التباين */
+        
+        .category-card-bg::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            /* تم التغيير من 0.05 إلى 0.4 لزيادة التعتيم ووضوح الخط الأبيض */
+            z-index: 2;
+        }
+        /* --- الإضافة الجديدة: إلغاء التعتيم على بطاقات القسم الثاني لكي يظهر اللون المطلوب والخط الداكن --- */
+        
+        .categories-section:not(.gray-bg) .category-card-bg::after {
+            content: none;
+            background-color: transparent;
+        }
+        /* ------------------------------------------------------------------------------------------------ */
+        
+        .category-card:hover .category-card-bg {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        /* التعديل 2: تغيير لون الخط الأساسي في البطاقة إلى فاتح (لأجل بطاقات الخلفية الملونة/المصورة) */
+        
+        .card-content {
+            margin-top: 110px;
+            position: relative;
+            z-index: 3;
+            color: var(--fd-white);
+            /* تم التعديل إلى لون فاتح (أبيض) ليظهر على صور الخلفية */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        /* التعديل 3: تغيير لون الفقرات والروابط في البطاقة إلى فاتح */
+        
+        .card-content p,
+        .card-content a {
+            color: var(--fd-white);
+            /* تم التعديل إلى لون فاتح (أبيض) ليظهر على صور الخلفية */
+        }
+        /* التعديل 4: إضافة ظل للخط الأبيض لزيادة وضوحه فوق الصورة */
+        
+        .categories-section.gray-bg .card-content h3,
+        .categories-section.gray-bg .card-content p {
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+            /* ظل غامق خفيف يجعل النص يبرز */
+        }
+        /* فصل الألوان للقسم الثاني (انضم إلينا) لجعله غامقاً على الخلفية البيضاء */
+        
+        .categories-section:not(.gray-bg) .card-content,
+        .categories-section:not(.gray-bg) .card-content p,
+        .categories-section:not(.gray-bg) .card-content a {
+            color: var(--fd-dark);
+            /* نص غامق لبطاقات القسم الثاني (انضم إلينا) */
+            text-shadow: none;
+            /* إزالة الظل من هنا */
+        }
+        
+        .card-icon {
+            font-size: 40px;
+            color: var(--fd-blue);
+            background-color: rgba(255, 255, 255, 0.8);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            /* ظل خفيف للبروز */
+        }
+        /* -------------------- نهاية تعديل البطاقات -------------------- */
+        /* -------------------- CITIES SECTION (التعديلات الجديدة) -------------------- */
+        
+        .cities-section {
+            padding: 80px 50px;
+            /* زيادة التباعد */
+            background-color: var(--fd-light-gray);
+            /* خلفية رمادية فاتحة لتمييز القسم */
+            text-align: center;
+            border-top: 1px solid #eee;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cities-section .section-icon {
+            font-size: 48px;
+            color: var(--fd-blue);
+            /* لون الأيقونة أصفر */
+            margin-bottom: 15px;
+        }
+        
+        .cities-section h2 {
+            font-size: 32px;
+            margin-bottom: 40px;
+            font-weight: bold;
+        }
+        
+        .cities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            /* تضييق الشبكة قليلاً للتركيز */
+            margin: 0 auto;
+            padding: 30px;
+            /* حشوة داخلية لشبكة المدن */
+            background-color: var(--fd-white);
+            /* شبكة المدن كبطاقة بيضاء */
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            /* ظل خفيف على الشبكة */
+            padding-top: 30px;
+        }
+        
+        .city-card {
+            display: block;
+            padding: 15px 20px;
+            background-color: var(--fd-white);
+            /* خلفية بيضاء لبطاقات المدن */
+            border-radius: 12px;
+            text-align: center;
+            /* توسيط النص */
+            transition: all 0.2s;
+            border: 1px solid var(--fd-light-gray);
+            color: var(--fd-dark);
+            font-weight: 600;
+            /* خط أكثر سماكة */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            font-size: 18px;
+        }
+        
+        .city-card:hover {
+            background-color: var(--fd-blue);
+            /* لون الخلفية أصفر */
+            color: var(--fd-dark);
+            /* تم التعديل لجعل النص أسود ليناسب الخلفية الصفراء */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border-color: var(--fd-blue);
+        }
+        /* -------------------- FOOTER - تحسين التنسيق -------------------- */
+        
+        .footer {
+            background-color: var(--fd-dark);
+            color: var(--fd-white);
+            padding: 40px 50px;
+            font-size: 18px;
+        }
+        
+        .footer-grid {
+            display: flex;
+            justify-content: center;
+            gap: 160px;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-bottom: 1px solid #444;
+            padding-bottom: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-column {
+            text-align: center !important;
+            /* توسيط محتوى العمود */
+            max-width: 200px;
+        }
+        
+        .footer-column h4 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--fd-blue);
+            /* لون العنوان أصفر */
+        }
+        
+        .footer-column a {
+            color: #ccc;
+            margin-bottom: 8px;
+            font-size: 18px;
+            display: block;
+            /* للسماح بتأثير الـ hover على مساحة أكبر */
+            padding: 3px 0;
+            transition: color 0.3s, padding-right 0.3s;
+        }
+        
+        .footer-column a:hover {
+            color: var(--fd-blue);
+            /* لون الـ Hover أصفر */
+            text-decoration: none;
+            padding-right: 5px;
+            /* تأثير إزاحة بسيط */
+        }
+        
+        .footer-bottom {
+            display: flex;
+            justify-content: center;
+            /* توسيط المحتوى الأفقي */
+            align-items: center;
+            padding-top: 20px;
+            color: #ccc;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-direction: column;
+            /* وضع العناصر فوق بعضها (حقوق النشر ثم السوشيال ميديا) */
+            gap: 15px;
+        }
+        
+        .social-links {
+            text-align: center;
+        }
+        
+        .social-links a {
+            color: var(--fd-white);
+            font-size: 20px;
+            transition: color 0.3s;
+            margin: 0 10px;
+        }
+        
+        .social-links a:hover {
+            color: var(--fd-blue);
+            /* لون الـ Hover أصفر */
+        }
+        /* -------------------- RESPONSIVE - الجوال -------------------- */
+        
+        @media (max-width: 900px) {
+            .header {
+                padding: 15px 20px;
+                display: flex;
+                justify-content: space-between;
+            }
+            .nav-links {
+                display: none;
+            }
+            .hero-section {
+                min-height: 100vh;
+                padding-top: 80px;
+                padding-bottom: 40px;
+            }
+            /* توسيط الفوتر على الجوال */
+            .footer-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                align-items: center;
+            }
+            /* شريط البحث في الجوال (إزالة شكل الحبة والتحول لنمط مقسوم) */
+            .search-box {
+                flex-wrap: wrap;
+                border-radius: 10px;
+                background-color: var(--fd-white);
+                padding: 0;
+                /* إزالة الـ padding للحصول على عرض كامل */
+            }
+            .search-box input {
+                width: 100%;
+                padding: 15px 18px;
+                border-radius: 0;
+                /* إزالة نصف القطر من المدخل في الجوال لملء العرض */
+                border-top-right-radius: 8px;
+                border-top-left-radius: 8px;
+            }
+            /* تعديل الأزرار في الجوال لتكون نصف العرض (مقسومة) وتصحيح نصف القطر */
+            #location-btn,
+            #final-search-btn {
+                width: 50%;
+                flex-grow: 1;
+                padding: 15px 10px;
+                font-size: 18px;
+                border-radius: 0;
+                /* إزالة نصف القطر من الأزرار في الجوال لملء العرض */
+                margin: 0;
+            }
+            /* تطبيق نصف قطر الزاوية السفلية اليسرى */
+            #final-search-btn {
+                border-bottom-left-radius: 8px;
+            }
+            /* تطبيق نصف قطر الزاوية السفلية اليمنى */
+            #location-btn {
+                border-bottom-right-radius: 8px;
+            }
+            /* المدن في الجوال */
+            .cities-grid {
+                grid-template-columns: 1fr;
+                padding: 0 20px;
+                box-shadow: none;
+                background-color: transparent;
+            }
+            .city-card {
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header" role="banner">
+        <a href="#" class="logo-container" aria-label="Fast Delivery - الصفحة الرئيسية">
+            <img src="logo.png" alt="Fast Delivery Logo" class="logo">
+            <span class="logo-text">Fast Delivery</span>
+        </a>
+
+        <nav class="nav-links">
+            <a href="#" data-key="header_link_1">مطاعم</a>
+            <a href="#" data-key="header_link_2">عروض</a>
+            <a href="#" data-key="header_link_3">كن شريكاً</a>
+        </nav>
+
+        <div class="action-buttons">
+            <button class="icon-btn" aria-label="السلة" role="button"><i class="fa fa-shopping-basket"></i></button>
+            <button class="login-btn-header" data-key="login_btn"><span id="login-text">تسجيل الدخول</span> <i class="fa fa-user"></i></button>
+        </div>
+    </header>
+
+    <section class="hero-section" role="region">
+        <div class="container">
+            <h1 data-key="hero_title">أسرع توصيل للمأكولات، البقالة والمزيد</h1>
+            <p data-key="hero_desc">اطلب طعامك المفضل عبر الإنترنت من آلاف المطاعم والمتاجر في منطقتك.</p>
+
+            <div class="search-wrapper">
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="أدخل منطقتك أو الشارع" aria-label="أدخل منطقتك للبحث">
+
+                    <button id="location-btn" type="button" aria-label="ابحث عن موقعك الحالي" title="ابحث عن موقعك الحالي">
+                        <i class="fa fa-map-marker-alt"></i>
+                    </button>
+
+                    <button id="final-search-btn" type="button" aria-label="البحث عن مطاعم في الموقع المحدد">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="hero-section-fade-out"></div>
+    </section>
+
+
+    <section class="categories-section gray-bg" role="region" aria-labelledby="section_1_title">
+        <h2 id="section_1_title" data-key="section_1_title">اطلب كل ما تحتاجه</h2>
+        <div class="categories-grid">
+            <div class="category-card" role="link" tabindex="0">
+                <div class="category-card-bg" style="background-image: url('food.jpg');"></div>
+                <div class="card-content">
+                    <h3 data-key="food_title">اطلب طعام</h3>
+                    <p data-key="food_summary">أفضل مطاعم المدينة جاهزة لتلبية طلبك.</p>
+                </div>
+            </div>
+            <div class="category-card" role="link" tabindex="0">
+                <div class="category-card-bg" style="background-image: url('grocery.jpg');"></div>
+                <div class="card-content">
+                    <h3 data-key="grocery_title">اطلب بقالة</h3>
+                    <p data-key="grocery_summary">سوبرماركت و بقالة تصلك في أقل وقت.</p>
+                </div>
+            </div>
+            <div class="category-card" role="link" tabindex="0">
+                <div class="category-card-bg" style="background-image: url('medicine.png');"></div>
+                <div class="card-content">
+                    <h3 data-key="medicine_title">اطلب دواء</h3>
+                    <p data-key="medicine_summary">صيدليات قريبة منك لتوصيل الأدوية.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="categories-section" role="region" aria-labelledby="section_2_title">
+        <h2 id="section_2_title" data-key="section_2_title">انضم إلينا</h2>
+        <div class="categories-grid">
+            <div class="category-card" role="link" tabindex="0">
+                <div class="category-card-bg" style="background-color: #d9d9d9; background-image: none;"></div>
+                <div class="card-content">
+                    <div class="card-icon"><i class="fa fa-store"></i></div>
+                    <h3 data-key="partner_title">كن شريك مطعم</h3>
+                    <p data-key="partner_desc">تواصل مع المزيد من العملاء وحقق نموًا ملحوظًا.</p>
+                    <a href="#" data-key="partner_link">اكتشف المزيد <i class="fa fa-chevron-left"></i></a>
+                </div>
+            </div>
+            <div class="category-card" role="link" tabindex="0">
+                <div class="category-card-bg" style="background-image: url('PLACEHOLDER_FOR_DELIVERY_IMAGE.jpg');"></div>
+                <div class="card-content">
+                    <div class="card-icon"><i class="fa fa-motorcycle"></i></div>
+                    <h3 data-key="delivery_title">انضم إلى فريق التوصيل</h3>
+                    <p data-key="delivery_desc">ابدأ العمل معنا واكسب دخلاً إضافياً.</p>
+                    <a href="#" data-key="delivery_link">سجل الآن <i class="fa fa-chevron-left"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cities-section" role="region" aria-labelledby="cities_title">
+        <div class="section-icon"><i class="fa fa-map-marked-alt"></i></div>
+        <h2 id="cities_title" data-key="cities_title">المدن التي نخدمها في مصر</h2>
+        <div class="cities-grid">
+            <a href="/egypt/city/cairo" class="city-card">القاهرة</a>
+            <a href="/egypt/city/alexandria" class="city-card">الإسكندرية</a>
+            <a href="/egypt/city/giza" class="city-card">الجيزة</a>
+            <a href="/egypt/city/mansoura" class="city-card">المنصورة</a>
+            <a href="/egypt/city/tanta" class="city-card">طنطا</a>
+            <a href="/egypt/city/zagazig" class="city-card">الزقازيق</a>
+            <a href="/egypt/city/ismailia" class="city-card">الإسماعيلية</a>
+            <a href="/egypt/city/port-said" class="city-card">بورسعيد</a>
+            <a href="/egypt/city/suez" class="city-card">السويس</a>
+            <a href="/egypt/city/assiut" class="city-card">أسيوط</a>
+            <a href="/egypt/city/minya" class="city-card">المنيا</a>
+            <a href="/egypt/city/luxor" class="city-card">الأقصر</a>
+        </div>
+    </section>
+
+    <footer class="footer" role="contentinfo">
+        <div class="footer-grid">
+            <div class="footer-column">
+                <h4 data-key="footer_col_1_title">Fast Delivery</h4>
+                <a href="#" data-key="footer_col_1_link_1">وظائف</a>
+                <a href="#" data-key="footer_col_1_link_2">الشروط والأحكام</a>
+                <a href="#" data-key="footer_col_1_link_3">سياسة الخصوصية</a>
+                <a href="#" data-key="footer_col_1_link_4">الأسئلة الشائعة</a>
+            </div>
+            <div class="footer-column">
+                <h4 data-key="footer_col_2_title">مطاعم شهيرة</h4>
+                <a href="#">ماكدونالدز</a>
+                <a href="#">كنتاكي</a>
+                <a href="#">بيتزا هت</a>
+                <a href="#">برجر كنج</a>
+            </div>
+            <div class="footer-column">
+                <h4 data-key="footer_col_3_title">مدن مصر</h4>
+                <a href="#">دمنهور</a>
+                <a href="#">طنطا</a>
+                <a href="#">القاهره</a>
+                <a href="#">الاسكندريه</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div>
+                © 2025 Fast Delivery
+            </div>
+            <div class="social-links">
+                <a href="#" aria-label="فيسبوك"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="تويتر"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="إنستغرام"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const translations = {
+            ar: {
+                header_link_1: 'مطاعم',
+                header_link_2: 'عروض',
+                header_link_3: 'كن شريكاً',
+                login_btn: 'تسجيل الدخول',
+                hero_title: 'أسرع توصيل للمأكولات البقالة والمزيد',
+                hero_desc: 'اطلب طعامك المفضل عبر الإنترنت من آلاف المطاعم والمتاجر في منطقتك.',
+                search_placeholder: 'أدخل منطقتك أو الشارع',
+                geo_loading: 'جاري تحديد الموقع...',
+                geo_success: 'تم تحديد الموقع بنجاح',
+                geo_error: 'فشل تحديد الموقع. سيتم فتح الخريطة لتحديد موقعك يدوياً.',
+                map_picker_title: 'الرجاء تحديد موقعك يدوياً',
+                map_picker_message: 'تم فتح خرائط جوجل. يرجى تحديد موقعك بدقة ثم إدخال اسم المنطقة في خانة البحث.',
+                section_1_title: 'اطلب كل ما تحتاجه',
+                food_title: 'اطلب طعام',
+                food_summary: 'أفضل مطاعم المدينة جاهزة لتلبية طلبك.',
+                grocery_title: 'اطلب بقالة',
+                grocery_summary: 'سوبرماركت و بقالة تصلك في أقل وقت.',
+                medicine_title: 'اطلب دواء',
+                medicine_summary: 'صيدليات قريبة منك لتوصيل الأدوية.',
+                section_2_title: 'انضم إلينا',
+                partner_title: 'كن شريك مطعم',
+                partner_desc: 'تواصل مع المزيد من العملاء وحقق نموًا ملحوظًا.',
+                partner_link: 'اكتشف المزيد',
+                delivery_title: 'انضم إلى فريق التوصيل',
+                delivery_desc: 'ابدأ العمل معنا واكسب دخلاً إضافياً.',
+                delivery_link: 'سجل الآن',
+                cities_title: 'المدن التي نخدمها في مصر', // تمت الإضافة هنا
+                footer_col_1_title: 'Fast Delivery',
+                footer_col_1_link_1: 'وظائف',
+                footer_col_1_link_2: 'الشروط والأحكام',
+                footer_col_1_link_3: 'سياسة الخصوصية',
+                footer_col_1_link_4: 'الأسئلة الشائعة',
+                footer_col_2_title: 'مطاعم شهيرة',
+                footer_col_3_title: 'مدن الإمارات',
+            }
+        };
+
+        const currentLang = 'ar';
+
+        function openGoogleMapsPicker() {
+            const googleMapsUrl = 'https://www.google.com/maps/@25.2048,55.2708,12z';
+            alert(`${translations[currentLang].map_picker_title} \n\n ${translations[currentLang].map_picker_message}`);
+            window.open(googleMapsUrl, '_blank');
+        }
+
+
+        window.initAutocomplete = function() {
+            const searchInput = document.getElementById('search-input');
+
+            if (typeof google !== 'undefined' && google.maps && google.maps.places) {
+                const autocomplete = new google.maps.places.Autocomplete(
+                    searchInput, {
+                        types: ['geocode'],
+                        componentRestrictions: {
+                            country: 'ae'
+                        }
+                    }
+                );
+
+                autocomplete.addListener('place_changed', function() {
+                    const place = autocomplete.getPlace();
+                    if (place.geometry) {
+                        const locationName = place.formatted_address;
+                        const lat = place.geometry.location.lat();
+                        const lng = place.geometry.location.lng();
+
+                        searchInput.value = locationName;
+                        searchInput.dataset.lat = lat;
+                        searchInput.dataset.lng = lng;
+
+                        console.log(`تم اختيار موقع من Autocomplete: ${locationName} (${lat}, ${lng})`);
+                    } else {
+                        searchInput.dataset.lat = '';
+                        searchInput.dataset.lng = '';
+                    }
+                });
+            } else {
+                console.warn('Google Maps API or Places Library not loaded. Autocomplete will not work. Check your API key and network connection.');
+                alert('تنبيه: خاصية اقتراحات البحث لا تعمل. يرجى التأكد من مفتاح Google API.');
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const htmlEl = document.documentElement;
+            const header = document.querySelector('.header');
+            const translatableElements = document.querySelectorAll('[data-key]');
+            const searchInput = document.getElementById('search-input');
+            const loginText = document.getElementById('login-text');
+            const locationBtn = document.getElementById('location-btn');
+            const finalSearchBtn = document.getElementById('final-search-btn');
+
+            const partnerLink = document.querySelector('[data-key="partner_link"]');
+            const deliveryLink = document.querySelector('[data-key="delivery_link"]');
+
+            function updateContent(lang) {
+                htmlEl.dir = 'rtl';
+                htmlEl.lang = 'ar';
+
+                translatableElements.forEach(el => {
+                    const key = el.getAttribute('data-key');
+                    if (key && el.tagName !== 'BUTTON' && el.tagName !== 'SPAN') {
+                        // تحديث النص للعناصر
+                        el.textContent = translations[lang][key];
+                    }
+                });
+
+                searchInput.placeholder = translations[lang].search_placeholder;
+
+                if (loginText) {
+                    loginText.textContent = translations[lang].login_btn;
+                }
+
+                locationBtn.innerHTML = '<i class="fa fa-map-marker-alt"></i>';
+                locationBtn.disabled = false;
+
+                const linkIcon = `<i class="fa fa-chevron-left"></i>`;
+
+                if (partnerLink) {
+                    partnerLink.innerHTML = `${translations[lang].partner_link} ${linkIcon}`;
+                }
+
+                if (deliveryLink) {
+                    deliveryLink.innerHTML = `${translations[lang].delivery_link} ${linkIcon}`;
+                }
+            }
+
+            function handleScroll() {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            }
+
+            function getGeolocation() {
+                if (!navigator.geolocation) {
+                    alert(translations[currentLang].geo_error + " - المتصفح لا يدعم تحديد الموقع الجغرافي.");
+                    openGoogleMapsPicker();
+                    return;
+                }
+
+                locationBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+                locationBtn.disabled = true;
+
+                const success = (position) => {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+
+                    searchInput.value = translations[currentLang].geo_success;
+                    searchInput.dataset.lat = latitude;
+                    searchInput.dataset.lng = longitude;
+
+                    locationBtn.innerHTML = '<i class="fa fa-check"></i>';
+                    console.log(`تم تحديد الموقع: خط العرض ${latitude}، خط الطول ${longitude}`);
+
+                    setTimeout(() => {
+                        updateContent(currentLang);
+                    }, 3000);
+                };
+
+                const error = (err) => {
+                    locationBtn.innerHTML = '<i class="fa fa-exclamation-triangle"></i>';
+                    console.error("خطأ تحديد الموقع:", err);
+
+                    alert(translations[currentLang].geo_error);
+                    openGoogleMapsPicker();
+
+                    setTimeout(() => {
+                        updateContent(currentLang);
+                    }, 3000);
+                };
+
+                navigator.geolocation.getCurrentPosition(success, error, {
+                    enableHighAccuracy: true,
+                    timeout: 5000,
+                    maximumAge: 0
+                });
+            }
+
+            function handleFinalSearch() {
+                const location = searchInput.value;
+                const lat = searchInput.dataset.lat;
+                const lng = searchInput.dataset.lng;
+
+                if (!location.trim() || !lat || !lng) {
+                    alert('الرجاء إدخال أو تحديد موقع صالح أولاً.');
+                    openGoogleMapsPicker();
+                    return;
+                }
+
+                alert(`بدء البحث عن مطاعم في: ${location} \n (الإحداثيات: ${lat}, ${lng})`);
+                console.log(`تم البحث عن: ${location} | الإحداثيات: ${lat}, ${lng}`);
+            }
+
+            locationBtn.addEventListener('click', getGeolocation);
+            finalSearchBtn.addEventListener('click', handleFinalSearch);
+            window.addEventListener('scroll', handleScroll);
+
+            updateContent(currentLang);
+            handleScroll();
+        });
+    </script>
+</body>
+
+</html>
