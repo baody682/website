@@ -569,11 +569,13 @@
                 box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
                 position: relative;
                 overflow: visible;
-                padding: 0 60px;
+                padding: 0;
+                /* تم التعديل: إزالة الحشو الأبوي والاعتماد على حشو حقل الإدخال */
             }
             .search-box input {
                 width: 100%;
-                padding: 16px 5px;
+                /* تم التعديل: لزيادة المسافة على اليمين (بداية النص) وعلى اليسار (لتجنب الأيقونات) */
+                padding: 16px 25px 16px 125px;
                 border-radius: 50px;
                 border-bottom: none;
                 font-size: 19px;
