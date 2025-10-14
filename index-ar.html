@@ -106,6 +106,23 @@
             justify-self: end;
         }
         
+        .lang-btn {
+            background: none;
+            border: 1px solid var(--fd-dark);
+            color: var(--fd-dark);
+            padding: 10px 15px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .lang-btn:hover {
+            background-color: var(--fd-blue);
+            border-color: var(--fd-blue);
+        }
+        
         .icon-btn {
             background: none;
             border: none;
@@ -314,7 +331,6 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* تم التعديل هنا: لإضافة التوسيط الرأسي */
             justify-content: center;
             min-height: 240px;
             position: relative;
@@ -362,19 +378,16 @@
         }
         
         .card-content {
-            /* تم التعديل هنا: إزالة الـ margin-top القديم */
             margin-top: 0;
             position: relative;
             z-index: 3;
             color: var(--fd-white);
-            /* تم التعديل هنا: توسيط المحتوى داخل الـ card-content */
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             width: 100%;
             height: 100%;
-            /* لضمان أخذ المساحة الكاملة للتوسيط الرأسي */
         }
         
         .category-card.plain-bg .card-content {
@@ -654,6 +667,7 @@
         </nav>
 
         <div class="action-buttons">
+            <button class="lang-btn" onclick="switchLanguage('en')">English</button>
             <button class="icon-btn" aria-label="السلة" role="button"><i class="fa fa-shopping-basket"></i></button>
             <button class="login-btn-header" data-key="login_btn"><i class="fa fa-user"></i></button>
         </div>
@@ -804,72 +818,11 @@
     </footer>
 
     <script>
-        const translations = {
-            ar: {
-                header_link_1: 'مطاعم',
-                header_link_2: 'عروض',
-                header_link_3: 'كن شريكاً',
-                hero_title: 'أسرع توصيل للمأكولات  البقالة والمزيد',
-                hero_desc: 'اطلب طعامك المفضل عبر الإنترنت من آلاف المطاعم والمتاجر في منطقتك.',
-                search_placeholder: 'أدخل منطقتك أو الشارع',
-                section_1_title: 'اطلب كل ما تحتاجه',
-                food_title: 'طعام',
-                food_summary: 'أفضل مطاعم المدينة جاهزة لتلبية طلبك.',
-                grocery_title: 'بقالة',
-                grocery_summary: 'سوبرماركت و بقالة تصلك في أقل وقت.',
-                medicine_title: 'دواء',
-                medicine_summary: 'صيدليات قريبة منك لتوصيل الأدوية.',
-                section_2_title: 'انضم إلينا',
-                partner_title: 'كن شريك مطعم',
-                partner_desc: 'تواصل مع المزيد من العملاء وحقق نموًا ملحوظًا.',
-                partner_link: 'اكتشف المزيد',
-                delivery_title: 'انضم إلى فريق التوصيل',
-                delivery_desc: 'ابدأ العمل معنا واكسب دخلاً إضافياً.',
-                delivery_link: 'سجل الآن',
-                cities_title: 'نصلك اينما كنت',
-                footer_col_1_title: 'Fast Delivery',
-                footer_col_1_link_1: 'وظائف',
-                footer_col_1_link_2: 'الشروط والأحكام',
-                footer_col_1_link_3: 'سياسة الخصوصية',
-                footer_col_1_link_4: 'الأسئلة الشائعة',
-                footer_col_2_title: 'مطاعم شهيرة',
-                footer_col_3_title: 'مدن مصر',
-            }
-        };
-
-        const currentLang = 'ar';
-
-        function updateContent(lang) {
-            const translatableElements = document.querySelectorAll('[data-key]');
-            const searchInput = document.getElementById('search-input');
-            const loginText = document.getElementById('login-text');
-            const partnerLink = document.querySelector('[data-key="partner_link"]');
-            const deliveryLink = document.querySelector('[data-key="delivery_link"]');
-
-            document.documentElement.dir = 'rtl';
-            document.documentElement.lang = 'ar';
-
-            translatableElements.forEach(el => {
-                const key = el.getAttribute('data-key');
-                if (key && el.tagName !== 'BUTTON' && el.tagName !== 'SPAN') {
-                    el.textContent = translations[lang][key];
-                }
-            });
-
-            searchInput.placeholder = translations[lang].search_placeholder;
-
-            if (loginText) {
-                loginText.textContent = translations[lang].login_btn;
-            }
-
-            const linkIcon = `<i class="fa fa-chevron-left"></i>`;
-
-            if (partnerLink) {
-                partnerLink.innerHTML = `${translations[lang].partner_link} ${linkIcon}`;
-            }
-
-            if (deliveryLink) {
-                deliveryLink.innerHTML = `${translations[lang].delivery_link} ${linkIcon}`;
+        function switchLanguage(lang) {
+            if (lang === 'en') {
+                window.location.href = 'index-en.html';
+            } else {
+                window.location.href = 'index-ar.html';
             }
         }
 
@@ -882,10 +835,26 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            updateContent(currentLang);
-            handleScroll();
+        function updateLinkIcons() {
+            const partnerLink = document.querySelector('[data-key="partner_link"]');
+            const deliveryLink = document.querySelector('[data-key="delivery_link"]');
+            const icon = `<i class="fa fa-chevron-left"></i>`;
 
+            if (partnerLink) {
+                const text = partnerLink.textContent.trim().split(' ').slice(0, -1).join(' ');
+                partnerLink.innerHTML = `${text} ${icon}`;
+            }
+
+            if (deliveryLink) {
+                const text = deliveryLink.textContent.trim().split(' ').slice(0, -1).join(' ');
+                deliveryLink.innerHTML = `${text} ${icon}`;
+            }
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            handleScroll();
+            updateLinkIcons();
             window.addEventListener('scroll', handleScroll);
         });
     </script>
