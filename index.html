@@ -471,9 +471,7 @@
         .cities-grid>a {
             position: relative;
             z-index: 2;
-            /* لضمان أن بطاقات المدن فوق طبقة التظليل */
         }
-        /* نهاية التعديل */
         
         .city-card {
             display: block;
@@ -579,7 +577,7 @@
             }
             .hero-section {
                 padding-bottom: 20px;
-                height: 605px;
+                height: 670px;
             }
             .hero-section h1 {
                 font-size: 38px;
@@ -588,7 +586,7 @@
                 font-size: 18px;
             }
             .search-wrapper {
-                padding: 0 10px;
+                width: 338px;
             }
             .search-box {
                 height: 60px;
@@ -658,14 +656,11 @@
                 box-shadow: none;
                 background-color: transparent;
                 gap: 10px;
-                /* إزالة الخلفية والصورة على شاشات الجوال */
                 background-image: none;
             }
             .cities-grid::before {
                 content: none;
-                /* إزالة الـ overlay على شاشات الجوال */
             }
-            /* نهاية التعديلات */
             .city-card {
                 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             }
@@ -682,7 +677,6 @@
                 padding: 30px 0;
             }
         }
-        /* --- Modal Styles (Desktop/Tablet default) --- */
         
         .modal-overlay {
             position: fixed;
@@ -794,7 +788,6 @@
         }
         
         .social-buttons .instagram {
-            /* Fallback gradient for Instagram */
             background: #d6249f;
             background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
             color: var(--fd-white);
